@@ -13,13 +13,18 @@ class BBox(BaseModel):
 
 
 class Track(BaseModel):
-    track_id: int = Field(ge=0)
+    track_id: int = Field(ge=-1)
     bbox: BBox
-    confidence: float = Field(ge=0, le=1)
+    confidence: float = Field(ge=0, le=1, alias="score")
+
+    model_config = {
+        "populate_by_name": True,
+    }
 
 
 class FrameTracks(BaseModel):
     frame_idx: int = Field(ge=0)
+    timestamp_s: float = Field(default=0, ge=0)
     tracks: list[Track] = Field(default_factory=list)
 
 
